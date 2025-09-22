@@ -1,13 +1,22 @@
+import { someFunction } from './utils.js'
+import * as Geometry from './geometry.js'
+
+// TODO 
+// - make particle class (replace sphere)
+// - delete mechanic
+// - click and hold t ospawn 
+// - clean up the main script and organize
+// - web gl, or pixi, or fuckin neithere honestly
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const canvasStyle = getComputedStyle(canvas);
+
+let s = new Geometry.Sphere(10,10);
+let ss = someFunction();
 
 ctx.fillStyle = "green";
 const GLOBAL_RECT_WIDTH = 50;
 const GLOBAL_RECT_HEIGHT = 30;
-
-let mouseEvent = new MouseEvent("click");
-
 
 canvas.addEventListener('mousemove', (event) => {
     let log = document.getElementById("log");
@@ -16,19 +25,12 @@ canvas.addEventListener('mousemove', (event) => {
     `
 });
 
-class Rectangle {
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-        this.width = GLOBAL_RECT_WIDTH;
-        this.height = GLOBAL_RECT_HEIGHT;
-    }
-}
+
 
 let rectangles = [];
 
 function addRectangle(x,y) {
-   rectangles.push(new Rectangle(x,y)); 
+   rectangles.push(new Geometry.Rectangle(x,y)); 
 }
 
 function renderRectangles() {
