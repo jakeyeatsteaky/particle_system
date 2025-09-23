@@ -22,3 +22,13 @@ export class Rectangle {
     this.height = Rectangle.HEIGHT;
   }
 }
+
+export class Circle {
+  static RADIUS = 50;
+
+  constructor(centerX, centerY) {
+    this.x = centerX;
+    this.y = centerY;
+    this.radius = Circle.RADIUS;
+  }
+}
