@@ -2,7 +2,6 @@ import { someFunction } from './utils.js'
 import * as Geometry from './geometry.js'
 
 // TODO 
-// - make particle class (replace sphere)
 // - delete mechanic
 // - click and hold t ospawn 
 // - clean up the main script and organize
@@ -41,7 +40,9 @@ function renderRectangles() {
 function renderCircles() {
     for (let i = 0; i < circles.length; i++) {
         let circle = circles[i];
-        ctx.arc(circle.x, circle.y, circle.radius, 0,180,false);
+        ctx.beginPath();
+        ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
+        ctx.fill();
     }
 }
 
