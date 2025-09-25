@@ -3,7 +3,8 @@ import * as Geometry from './geometry.js'
 
 // TODO 
 // - delete mechanic
-// - click and hold t ospawn 
+// - physics on objects
+// - click and hold to spawn 
 // - clean up the main script and organize
 // - web gl, or pixi, or fuckin neithere honestly
 
@@ -19,32 +20,7 @@ canvas.addEventListener('mousemove', (event) => {
     `
 });
 
-let rectangles = [];
 let circles = [];
-
-function addRectangle(x,y) {
-   rectangles.push(new Geometry.Rectangle(x,y)); 
-}
-
-function addCircle(x,y) {
-    circles.push(new Geometry.Circle(x,y));
-}
-
-function renderRectangles() {
-    for (let i = 0; i < rectangles.length; i++) {
-        let rect = rectangles[i];
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-    }
-}
-
-function renderCircles() {
-    for (let i = 0; i < circles.length; i++) {
-        let circle = circles[i];
-        ctx.beginPath();
-        ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-        ctx.fill();
-    }
-}
 
 canvas.onclick = (event) => {
     const rect =  canvas.getBoundingClientRect();
@@ -52,8 +28,8 @@ canvas.onclick = (event) => {
     const actualX = event.clientX - rect.left;
     const actualY = event.clientY - rect.top;
         
-    addCircle(actualX, actualY);
-    console.log(`Adding circle: (${actualX}, ${actualY})`);
+    Geometry.addCircle(circles, actualX, actualY);
+    console.log(`Adding circle: (${actualX}, ${actualY}) #${circles.length}`);
 }
 
 function update() {
@@ -62,7 +38,9 @@ function update() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderCircles();
+    for(let i = 0; i < circles.length; i++) {
+        circles[i].render(ctx)
+    }
 }
 
 function loop() {
