@@ -1,4 +1,4 @@
-import { someFunction } from './utils.js'
+import { getCurrentMousePosition } from './utils.js'
 import * as Geometry from './geometry.js'
 
 // TODO 
@@ -13,11 +13,14 @@ const ctx = canvas.getContext('2d');
 
 ctx.fillStyle = "green";
 
+let mouseX, mouseY;
+
 canvas.addEventListener('mousemove', (event) => {
     let log = document.getElementById("log");
     log.innerText = `
-    Mouse X/Y Pos: = (${event.clientX}, ${event.clientY})
-    `
+    Mouse X/Y Pos: = (${event.clientX}, ${event.clientY})`
+    mouseX = event.clientX;
+    mouseY = event.clientY;
 });
 
 let circles = [];
@@ -30,6 +33,13 @@ canvas.onclick = (event) => {
         
     Geometry.addCircle(circles, actualX, actualY);
     console.log(`Adding circle: (${actualX}, ${actualY}) #${circles.length}`);
+}
+
+canvas.onauxclick = (event) => {
+    let ret = checkCircleLocations(circles, mouseX, mouseY);
+    if (ret !== -1) {
+        circles.remove[ret];
+    }
 }
 
 function update() {

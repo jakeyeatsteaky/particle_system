@@ -13,3 +13,7 @@
 export function someFunction() {
     return 42;
 }
+
+export function getCurrentMousePosition() {
+    
+}
