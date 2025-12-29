@@ -1,6 +1,6 @@
-import { someFunction } from './utils.js'
 import * as Geometry from './geometry.js'
 
+const DEFAULT_CIRCLE_COLOR = 'green';
 // TODO 
 // - make particle class (replace sphere)
 // - delete mechanic
@@ -19,6 +19,14 @@ canvas.addEventListener('mousemove', (event) => {
     Mouse X/Y Pos: = (${event.clientX}, ${event.clientY})
     `
 });
+
+const colorWheelEvent = (event) => {
+    console.log("test", event.target.value);
+    canvas.style.background = event.target.value;
+}
+
+const colorWheel = document.getElementById('colorwheel');
+colorWheel.addEventListener('input', colorWheelEvent);
 
 let rectangles = [];
 let circles = [];
@@ -41,7 +49,11 @@ function renderRectangles() {
 function renderCircles() {
     for (let i = 0; i < circles.length; i++) {
         let circle = circles[i];
-        ctx.arc(circle.x, circle.y, circle.radius, 0,180,false);
+        ctx.beginPath();
+        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI*2, false);
+        ctx.fillStyle = DEFAULT_CIRCLE_COLOR;
+        ctx.fill();
+        ctx.closePath();
     }
 }
 
