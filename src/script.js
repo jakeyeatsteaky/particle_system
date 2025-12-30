@@ -2,16 +2,18 @@ import * as Geometry from './geometry.js'
 
 const DEFAULT_CIRCLE_COLOR = 'green';
 // TODO 
-// - make particle class (replace sphere)
-// - delete mechanic
-// - click and hold t ospawn 
-// - clean up the main script and organize
-// - web gl, or pixi, or fuckin neithere honestly
+// add hold to spawn
+// add physics
+// collision
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-ctx.fillStyle = "green";
+let num_particles = 0;
+
+ctx.fillStyle = DEFAULT_CIRCLE_COLOR;
+ctx.strokeStyle = "black";
+ctx.lineWidth = 1;
 
 canvas.addEventListener('mousemove', (event) => {
     let log = document.getElementById("log");
@@ -31,12 +33,24 @@ colorWheel.addEventListener('input', colorWheelEvent);
 let rectangles = [];
 let circles = [];
 
-function addRectangle(x,y) {
-   rectangles.push(new Geometry.Rectangle(x,y)); 
+function addRectangle(x, y) {
+    rectangles.push(new Geometry.Rectangle(x, y));
 }
 
-function addCircle(x,y) {
-    circles.push(new Geometry.Circle(x,y));
+function addParticle(x, y) {
+    circles.push(new Geometry.Circle(x, y));
+    num_particles++;
+}
+
+function removeParticle(x, y) {
+    for (const [idx, circle] of circles.entries()) {
+        if (circle.contains(x, y)) {
+            console.log(`Removing particle at ${x}, ${y}`);
+            circles.splice(idx, 1);
+            num_particles--;
+            return;
+        }
+    }
 }
 
 function renderRectangles() {
@@ -50,25 +64,31 @@ function renderCircles() {
     for (let i = 0; i < circles.length; i++) {
         let circle = circles[i];
         ctx.beginPath();
-        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI*2, false);
-        ctx.fillStyle = DEFAULT_CIRCLE_COLOR;
+        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, false);
         ctx.fill();
+        ctx.stroke();
         ctx.closePath();
     }
 }
 
-canvas.onclick = (event) => {
-    const rect =  canvas.getBoundingClientRect();
+const spawn = (event) => {
+    const rect = canvas.getBoundingClientRect();
     console.log(`rect: ${rect.right}, ${rect.left} `)
     const actualX = event.clientX - rect.left;
     const actualY = event.clientY - rect.top;
-        
-    addCircle(actualX, actualY);
+    addParticle(actualX, actualY);
     console.log(`Adding circle: (${actualX}, ${actualY})`);
+    const np = document.getElementById("particle-count");
+    np.innerText = `Number of Particles: ${num_particles}`;
 }
 
-function update() {
+canvas.addEventListener("mousedown", spawn);
 
+function update() {
+    for (let circle of circles) {
+        circle.x += 1;
+        circle.y += 1;
+    }
 }
 
 function draw() {

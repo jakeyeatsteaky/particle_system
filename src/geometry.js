@@ -24,11 +24,17 @@ export class Rectangle {
 }
 
 export class Circle {
-  static RADIUS = 50;
+  static RADIUS = 10;
 
   constructor(centerX, centerY) {
     this.x = centerX;
     this.y = centerY;
     this.radius = Circle.RADIUS;
+  };
+
+  contains(x, y) {
+    const dx = x - this.x;
+    const dy = y - this.y;
+    return Math.hypot(dx, dy) <= this.radius;
   }
 }
